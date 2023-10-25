@@ -1,4 +1,3 @@
-from typing import Tuple  # pylint: disable=unused-import
 import rospy
 from geometry_msgs.msg import Pose2D  # pylint: disable=unused-import
 from rll_move_client.client import RLLBasicMoveClient, RLLMoveClientListener
