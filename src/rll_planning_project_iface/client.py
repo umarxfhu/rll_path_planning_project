@@ -5,17 +5,18 @@ from rll_move_client.error import RLLErrorCode
 from rll_move_client.formatting import override_formatting_for_ros_types
 from rll_planning_project.srv import CheckPath, GetStartGoal, Move
 
-
+print("test0")
 class RLLPlanningProjectClient(RLLBasicMoveClient, RLLMoveClientListener):
     CHECK_PATH_SRV_NAME = "check_path"
     GET_START_GOAL_SRV_NAME = "get_start_goal"
     MOVE_SRV_NAME = "move"
+    print("test1")
 
     def __init__(self, execute=None, verbose=True):
         self.verbose = verbose
         RLLBasicMoveClient.__init__(self)
         RLLMoveClientListener.__init__(self, execute)
-
+        print("test2")
         self.get_start_goal_srv = rospy.ServiceProxy('get_start_goal',
                                                      GetStartGoal)
         self.move_srv = rospy.ServiceProxy('move', Move)
