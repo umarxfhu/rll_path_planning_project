@@ -106,7 +106,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
         new_pose.y = pose_start.y + motion[1];
         new_pose.theta = pose_start.theta + motion[2];
 
-        check_path_req.pose_start = pose_start;
+        check_path_req.pose_start = prev_poset;
         check_path_req.pose_goal = new_pose;
         if (check_path_srv.call(check_path_req, check_path_resp))
         {
@@ -121,6 +121,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
             ROS_ERROR("[path_planner] Failed to call service check_path_srv");
             return 1;
         }
+        prev_pose = new_pose;
     }
 
     if (path.size() > 0)
