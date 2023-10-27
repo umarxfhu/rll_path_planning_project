@@ -100,7 +100,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
         {
             if (check_path_resp.success)
             {
-                path.push_back(new_pose)
+                path.push_back(new_pose);
             }
         }
         else
