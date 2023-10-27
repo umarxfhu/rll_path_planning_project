@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
-catkin_python_setup()
+# catkin_python_setup()
 
 add_service_files(
   FILES
@@ -38,10 +38,16 @@ add_executable(planning_iface src/planning_iface.cpp src/planning_iface_node.cpp
 target_link_libraries(planning_iface ${catkin_LIBRARIES})
 add_dependencies(planning_iface ${PROJECT_NAME}_generate_messages_cpp)
 
-catkin_install_python(PROGRAMS scripts/path_planner.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+add_executable(path_planner src/path_planner.cpp)
+target_link_libraries(path_planner ${catkin_LIBRARIES})
+add_dependencies(path_planner ${PROJECT_NAME}_generate_messages_cpp)
+
+# catkin_install_python(PROGRAMS scripts/path_planner.py
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(TARGETS planning_iface
+        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(TARGETS path_planner
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(DIRECTORY config launch meshes urdf DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
