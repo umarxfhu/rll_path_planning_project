@@ -1,5 +1,7 @@
 // This file will mimic the behaviour of path_planner.py and client.py
 // I will also modify the path_planner.launch to launch this cpp node instead
+#include <vector>
+
 #include "ros/ros.h"
 #include "rll_planning_project/Move.h"
 #include "rll_planning_project/CheckPath.h"
@@ -25,8 +27,8 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
 
     float map_width, map_length;
     // TODO: Fix get param syntax, not correct
-    nh_ptr->getParam("map_width", map_width);
-    nh_ptr->getParam("map_length", map_length);
+    nh_ptr->getParam("/map_width", map_width);
+    nh_ptr->getParam("/map_length", map_length);
 
     const std::string GET_START_GOAL_SRV_NAME = "get_start_goal";
     const std::string MOVE_SRV_NAME = "move";
@@ -59,7 +61,74 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     ROS_INFO("[path_planner][INFO] start pose: x %f, y %f, theta %f", pose_start.x, pose_start.y, pose_start.theta);
     ROS_INFO("[path_planner][INFO] goal pose: x %f, y %f, theta %f", pose_goal.x, pose_goal.y, pose_goal.theta);
 
-    return true;
+    /*########################################
+    # Implement path planning algorithm here #
+    ########################################*/
+
+    std::vector<geometry_msgs::Pose2D> path = {};
+
+    // example motions for the gripper
+    std::vector<std::vector<float>> motions = {
+        // movement by 0.1m in positive or negative x-direction
+        {0.1, 0, 0},
+        {-0.1, 0, 0},
+        // movement by 0.1m in positive or negative y-direction
+        {0, 0.1, 0},
+        {0, -0.1, 0},
+        // rotation on the spot by 90°, clockwise or counterclockwise
+        {0, 0, 1.57},
+        {0, 0, 1.57},
+        // rotation by 90° and movement into y or x direction (grinding curves)
+        {0, 0.1, 1.57},
+        {0.1, 0, -1.57}
+    }
+
+    /*###############################################
+    # Example on how to use check_path functionality
+    ###############################################*/
+
+    rll_planning_project::CheckPath::Request check_path_req;
+    rll_planning_project::CheckPath::Response check_path_resp;
+
+    for (auto motion : motions)
+    {
+        geometry_msgs::Pose2D new_pose;
+        new_pose.x = pose_start.x + motion[0];
+        new_pose.y = pose_start.y + motion[1] new_pose.theta = pose_start.theta + motion[2] if (check_path_srv.call(check_path_req, check_path_resp))
+        {
+            if (check_path_resp.success)
+            {
+                path.push_back(new_pose)
+            }
+        }
+        else
+        {
+            ROS_ERROR("[path_planner] Failed to call service check_path_srv");
+            return 1;
+        }
+    }
+
+    if (path)
+    {
+        ROS_INFO("[path_planner][INFO] A path was found, now trying to execute it");
+        for (auto pose : path)
+        {
+            rll_planning_project::Move::Request move_req;
+            rll_planning_project::Move::Response move_resp;
+            move_req.pose = pose;
+            if (move_srv.call(move_req, move_resp))
+            {
+            }
+            else
+            {
+                ROS_ERROR("[path_planner] Failed to call service move_srv");
+                return 1;
+            }
+        }
+        return true;
+    }
+    ROS_INFO("[path_planner][INFO] No path to goal found");
+    return false;
 }
 
 int main(int argc, char **argv)
