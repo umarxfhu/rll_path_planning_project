@@ -94,7 +94,9 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     {
         geometry_msgs::Pose2D new_pose;
         new_pose.x = pose_start.x + motion[0];
-        new_pose.y = pose_start.y + motion[1] new_pose.theta = pose_start.theta + motion[2] if (check_path_srv.call(check_path_req, check_path_resp))
+        new_pose.y = pose_start.y + motion[1];
+        new_pose.theta = pose_start.theta + motion[2];
+        if (check_path_srv.call(check_path_req, check_path_resp))
         {
             if (check_path_resp.success)
             {
@@ -108,7 +110,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
         }
     }
 
-    if (path)
+    if (path.size() > 0)
     {
         ROS_INFO("[path_planner][INFO] A path was found, now trying to execute it");
         for (auto pose : path)
