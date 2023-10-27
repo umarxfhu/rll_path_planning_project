@@ -80,8 +80,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
         {0, 0, 1.57},
         // rotation by 90° and movement into y or x direction (grinding curves)
         {0, 0.1, 1.57},
-        {0.1, 0, -1.57}
-    }
+        {0.1, 0, -1.57}};
 
     /*###############################################
     # Example on how to use check_path functionality
