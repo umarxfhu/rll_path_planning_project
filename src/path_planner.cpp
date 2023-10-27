@@ -104,6 +104,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
         {
             if (check_path_resp.success)
             {
+                ROS_INFO("[path_planner][INFO] CheckPath Success, adding position to path");
                 path.push_back(new_pose);
             }
         }
