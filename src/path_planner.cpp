@@ -5,6 +5,7 @@
 #include "rll_planning_project/CheckPath.h"
 #include "rll_planning_project/GetStartGoal.h"
 #include <rll_planning_project/planning_iface.h>
+#include <rll_planning_project/planning_iface_simulation.h>
 
 #include <rll_move_client/util.h>
 #include <rll_move_client/move_client_listener.h>
