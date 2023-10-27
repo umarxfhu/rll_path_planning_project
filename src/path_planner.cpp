@@ -27,8 +27,8 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
 
     float map_width, map_length;
     // TODO: Fix get param syntax, not correct
-    nh_ptr->getParam("/map_width", map_width);
-    nh_ptr->getParam("/map_length", map_length);
+    nh_ptr->getParam("path_planner/map_width", map_width);
+    nh_ptr->getParam("path_planner/map_length", map_length);
 
     const std::string GET_START_GOAL_SRV_NAME = "get_start_goal";
     const std::string MOVE_SRV_NAME = "move";
