@@ -8,6 +8,8 @@
 
 #include <rll_move_client/util.h>
 #include <rll_move_client/move_client_listener.h>
+#include <rll_move_client/move_client_default.h>
+#include <rll_move_client/move_client.h>
 
 #include <geometry_msgs/Pose2D.h>
 
