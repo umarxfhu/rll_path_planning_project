@@ -39,11 +39,12 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     // Make a service call to get start and goal information using the PlanningIfaceBase class
     // PlanningIfaceBase planning_iface(*nh_ptr);
 
+    rll_planning_project::GetStartGoal::Request start_goal_req;
     rll_planning_project::GetStartGoal::Response start_goal_resp;
     geometry_msgs::Pose2D pose_start;
     geometry_msgs::Pose2D pose_goal;
 
-    if (get_start_goal_srv.call(start_goal_resp))
+    if (get_start_goal_srv.call(start_goal_req, start_goal_resp))
     {
         pose_start = start_goal_resp.start;
         pose_goal = start_goal_resp.goal;
