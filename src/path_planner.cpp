@@ -35,7 +35,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     ros::ServiceClient check_path_srv = nh_ptr->serviceClient<rll_planning_project::CheckPath>(CHECK_PATH_SRV_NAME, true);
 
     // Make a service call to get start and goal information using the PlanningIfaceBase class
-    PlanningIfaceBase planning_iface(*nh_ptr);
+    PlanningIface planning_iface(*nh_ptr);
 
     rll_planning_project::GetStartGoal::Request start_goal_req;
     rll_planning_project::GetStartGoal::Response start_goal_resp;

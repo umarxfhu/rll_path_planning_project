@@ -31,21 +31,21 @@
 class PlanningIfaceBase : public virtual RLLMoveIfaceGripperServices, public RLLMoveIfaceBase
 {
 public:
-  explicit PlanningIfaceBase(const ros::NodeHandle& nh);
+  explicit PlanningIfaceBase(const ros::NodeHandle &nh);
 
   // NOLINTNEXTLINE google-runtime-references
-  bool moveSrv(rll_planning_project::Move::Request& req, rll_planning_project::Move::Response& resp);
+  bool moveSrv(rll_planning_project::Move::Request &req, rll_planning_project::Move::Response &resp);
   // NOLINTNEXTLINE google-runtime-references
-  bool checkPathSrv(rll_planning_project::CheckPath::Request& req, rll_planning_project::CheckPath::Response& resp);
-  void startServicesAndRunNode(ros::NodeHandle* nh) override;
+  bool checkPathSrv(rll_planning_project::CheckPath::Request &req, rll_planning_project::CheckPath::Response &resp);
+  void startServicesAndRunNode(ros::NodeHandle *nh) override;
+  bool getStartGoalSrv( // NOLINTNEXTLINE google-runtime-references
+      rll_planning_project::GetStartGoal::Request &req, rll_planning_project::GetStartGoal::Response &resp);
 
 protected:
   RLLErrorCode idle() override;
-  void runJob(const rll_msgs::JobEnvGoalConstPtr& goal, rll_msgs::JobEnvResult* result) override;
-  bool getStartGoalSrv(  // NOLINTNEXTLINE google-runtime-references
-      rll_planning_project::GetStartGoal::Request& req, rll_planning_project::GetStartGoal::Response& resp);
-  RLLErrorCode checkPath(const rll_planning_project::CheckPath::Request& req);
-  RLLErrorCode move(const rll_planning_project::Move::Request& req, rll_planning_project::Move::Response* /*resp*/);
+  void runJob(const rll_msgs::JobEnvGoalConstPtr &goal, rll_msgs::JobEnvResult *result) override;
+  RLLErrorCode checkPath(const rll_planning_project::CheckPath::Request &req);
+  RLLErrorCode move(const rll_planning_project::Move::Request &req, rll_planning_project::Move::Response * /*resp*/);
 
   void registerPermissions();
 
@@ -67,22 +67,22 @@ private:
   geometry_msgs::Pose start_pose_grip_, start_pose_above_;
   geometry_msgs::Pose goal_pose_grip_, goal_pose_above_;
   geometry_msgs::Pose2D start_pose_2d_, goal_pose_2d_;
-  robot_state::RobotState* check_path_start_state_;
+  robot_state::RobotState *check_path_start_state_;
 
   void insertGraspObject();
   void resetGraspObject();
   RLLErrorCode resetToStart();
-  bool runPlannerOnce(const rll_msgs::JobEnvGoalConstPtr& goal, rll_msgs::JobEnvResult* result);
+  bool runPlannerOnce(const rll_msgs::JobEnvGoalConstPtr &goal, rll_msgs::JobEnvResult *result);
   bool checkGoalState();
-  bool writeResult(rll_msgs::JobEnvResult* result);
-  void diffCurrentState(const geometry_msgs::Pose2D& pose_des, float* diff_trans, float* diff_rot,
-                        geometry_msgs::Pose2D* pose2d_cur);
-  void pose2dToPose3d(const geometry_msgs::Pose2D& pose2d, geometry_msgs::Pose* pose3d);
-  void generateRotationWaypoints(const geometry_msgs::Pose2D& pose2d_start, float rot_step_size,
-                                 std::vector<geometry_msgs::Pose>* waypoints);
+  bool writeResult(rll_msgs::JobEnvResult *result);
+  void diffCurrentState(const geometry_msgs::Pose2D &pose_des, float *diff_trans, float *diff_rot,
+                        geometry_msgs::Pose2D *pose2d_cur);
+  void pose2dToPose3d(const geometry_msgs::Pose2D &pose2d, geometry_msgs::Pose *pose3d);
+  void generateRotationWaypoints(const geometry_msgs::Pose2D &pose2d_start, float rot_step_size,
+                                 std::vector<geometry_msgs::Pose> *waypoints);
 };
 
-#endif  // RLL_PLANNING_PROJECT_PLANNING_IFACE_H
+#endif // RLL_PLANNING_PROJECT_PLANNING_IFACE_H
 
 /*
  * Local Variables:
