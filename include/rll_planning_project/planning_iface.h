@@ -38,12 +38,12 @@ public:
   // NOLINTNEXTLINE google-runtime-references
   bool checkPathSrv(rll_planning_project::CheckPath::Request &req, rll_planning_project::CheckPath::Response &resp);
   void startServicesAndRunNode(ros::NodeHandle *nh) override;
-  bool getStartGoalSrv( // NOLINTNEXTLINE google-runtime-references
-      rll_planning_project::GetStartGoal::Request &req, rll_planning_project::GetStartGoal::Response &resp);
 
 protected:
   RLLErrorCode idle() override;
   void runJob(const rll_msgs::JobEnvGoalConstPtr &goal, rll_msgs::JobEnvResult *result) override;
+  bool getStartGoalSrv( // NOLINTNEXTLINE google-runtime-references
+      rll_planning_project::GetStartGoal::Request &req, rll_planning_project::GetStartGoal::Response &resp);
   RLLErrorCode checkPath(const rll_planning_project::CheckPath::Request &req);
   RLLErrorCode move(const rll_planning_project::Move::Request &req, rll_planning_project::Move::Response * /*resp*/);
 

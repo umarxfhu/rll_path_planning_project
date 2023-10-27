@@ -24,6 +24,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     ROS_INFO("[path_planner][INFO] Got a planning request");
 
     float map_width, map_length;
+    // TODO: Fix get param syntax, not correct
     nh_ptr->getParam("map_width", map_width);
     nh_ptr->getParam("map_length", map_length);
 
@@ -38,25 +39,24 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     // Make a service call to get start and goal information using the PlanningIfaceBase class
     // PlanningIfaceBase planning_iface(*nh_ptr);
 
-    rll_planning_project::GetStartGoal::Request start_goal_req;
     rll_planning_project::GetStartGoal::Response start_goal_resp;
     geometry_msgs::Pose2D pose_start;
     geometry_msgs::Pose2D pose_goal;
 
-    // if (planning_iface.getStartGoalSrv(start_goal_req, start_goal_resp))
-    // {
-    //     pose_start = start_goal_resp.start;
-    //     pose_goal = start_goal_resp.goal;
-    // }
-    // else
-    // {
-    //     ROS_ERROR("[path_planner][ERROR] Failed to call getStartGoalSrv");
-    //     // Handle the error
-    // }
+    if (get_start_goal_srv.call(start_goal_resp))
+    {
+        pose_start = start_goal_resp.start;
+        pose_goal = start_goal_resp.goal;
+    }
+    else
+    {
+        ROS_ERROR("[path_planner] Failed to call service get_start_goal_srv");
+        return 1;
+    }
 
     ROS_INFO("[path_planner][INFO] map dimensions: width=%1.2fm, length=%1.2fm", map_width, map_length);
-    // ROS_INFO("[path_planner][INFO] start pose: x %f, y %f, theta %f", pose_start.x, pose_start.y, pose_start.theta);
-    // ROS_INFO("[path_planner][INFO] goal pose: x %f, y %f, theta %f", pose_goal.x, pose_goal.y, pose_goal.theta);
+    ROS_INFO("[path_planner][INFO] start pose: x %f, y %f, theta %f", pose_start.x, pose_start.y, pose_start.theta);
+    ROS_INFO("[path_planner][INFO] goal pose: x %f, y %f, theta %f", pose_goal.x, pose_goal.y, pose_goal.theta);
 
     return true;
 }
