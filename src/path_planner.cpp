@@ -26,6 +26,10 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     nh_ptr->getParam("map_width", map_width);
     nh_ptr->getParam("map_length", map_length);
 
+    const std::string GET_START_GOAL_SRV_NAME = "get_start_goal";
+    const std::string MOVE_SRV_NAME = "move";
+    const std::string CHECK_PATH_SRV_NAME = "check_path";
+
     ros::ServiceClient get_start_goal_srv = nh_ptr->serviceClient<rll_planning_project::GetStartGoal>(GET_START_GOAL_SRV_NAME);
     ros::ServiceClient move_srv = nh_ptr->serviceClient<rll_planning_project::Move>(MOVE_SRV_NAME);
     ros::ServiceClient check_path_srv = nh_ptr->serviceClient<rll_planning_project::CheckPath>(CHECK_PATH_SRV_NAME, true);
@@ -40,8 +44,8 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
 
     if (planning_iface.getStartGoalSrv(start_goal_req, start_goal_resp))
     {
-        pose_start = resp.start;
-        pose_goal = resp.goal;
+        pose_start = start_goal_resp.start;
+        pose_goal = start_goal_resp.goal;
     }
     else
     {
@@ -50,10 +54,10 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     }
 
     ROS_INFO("[path_planner][INFO] map dimensions: width=%1.2fm, length=%1.2fm", map_width, map_length);
-    ROS_INFO("[path_planner][INFO] start pose: x %f, y %f, theta %f", pose_start.getX, pose_start.getY, pose_start.getTheta);
-    ROS_INFO("[path_planner][INFO] goal pose: x %f, y %f, theta %f", pose_goal.getX, pose_goal.getY, pose_goal.getTheta);
+    ROS_INFO("[path_planner][INFO] start pose: x %f, y %f, theta %f", pose_start.x, pose_start.y, pose_start.theta);
+    ROS_INFO("[path_planner][INFO] goal pose: x %f, y %f, theta %f", pose_goal.x, pose_goal.y, pose_goal.theta);
 
-    return True;
+    return true;
 }
 
 int main(int argc, char **argv)
@@ -63,10 +67,6 @@ int main(int argc, char **argv)
 
     // Initialize the global pointer with the address of the local NodeHandle
     nh_ptr = &nh;
-
-    const std::string GET_START_GOAL_SRV_NAME = "get_start_goal";
-    const std::string MOVE_SRV_NAME = "move";
-    const std::string CHECK_PATH_SRV_NAME = "check_path";
 
     RLLCallbackMoveClient<RLLDefaultMoveClient> client(&plan_to_goal);
 
