@@ -106,7 +106,7 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
         new_pose.y = pose_start.y + motion[1];
         new_pose.theta = pose_start.theta + motion[2];
 
-        check_path_req.pose_start = prev_poset;
+        check_path_req.pose_start = prev_pose;
         check_path_req.pose_goal = new_pose;
         if (check_path_srv.call(check_path_req, check_path_resp))
         {
