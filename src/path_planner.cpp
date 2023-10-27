@@ -86,14 +86,20 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     # Example on how to use check_path functionality
     ###############################################*/
 
+    geometry_msgs::Pose2D prev_pose = pose_start;
+
     for (auto motion : motions)
     {
         rll_planning_project::CheckPath::Request check_path_req;
         rll_planning_project::CheckPath::Response check_path_resp;
         geometry_msgs::Pose2D new_pose;
+
         new_pose.x = pose_start.x + motion[0];
         new_pose.y = pose_start.y + motion[1];
         new_pose.theta = pose_start.theta + motion[2];
+
+        check_path_req.pose_start = prev_pose;
+        check_path_req.pose_goal = new_pose;
         if (check_path_srv.call(check_path_req, check_path_resp))
         {
             if (check_path_resp.success)
