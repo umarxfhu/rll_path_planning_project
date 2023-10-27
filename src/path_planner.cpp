@@ -66,21 +66,29 @@ bool plan_to_goal(RLLDefaultMoveClient *const move_client)
     ########################################*/
 
     std::vector<geometry_msgs::Pose2D> path = {};
-
+    float min_dist = 0.02; // meters
     // example motions for the gripper
-    std::vector<std::vector<float>> motions = {
-        // movement by 0.1m in positive or negative x-direction
-        {0.1, 0, 0},
-        {-0.1, 0, 0},
-        // movement by 0.1m in positive or negative y-direction
-        {0, 0.1, 0},
-        {0, -0.1, 0},
-        // rotation on the spot by 90°, clockwise or counterclockwise
-        {0, 0, 1.57},
-        {0, 0, 1.57},
-        // rotation by 90° and movement into y or x direction (grinding curves)
-        {0, 0.1, 1.57},
-        {0.1, 0, -1.57}};
+    std::vector<std::vector<float>>
+        motions = {
+            // movement by min_distm in positive or negative x-direction
+            {min_dist, 0, 0},
+            {-min_dist, 0, 0},
+            // movement by min_distm in positive or negative y-direction
+            {0, min_dist, 0},
+            {0, -min_dist, 0},
+            // rotation on the spot by 90°, clockwise or counterclockwise
+            {0, 0, 1.57},
+            {0, 0, -1.57},
+            // rotation by 90° and movement into y or x direction (grinding curves)
+            {0, min_dist, 1.57},
+            {0, min_dist, -1.57},
+            {0, -min_dist, 1.57},
+            {0, -min_dist, -1.57},
+            {min_dist, 0, 1.57},
+            {min_dist, 0, -1.57},
+            {-min_dist, 0, 1.57},
+            {-min_dist, 0, -1.57},
+        };
 
     /*###############################################
     # Example on how to use check_path functionality
