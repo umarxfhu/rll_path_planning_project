@@ -1,4 +1,5 @@
 # Path Planning Project
+![KUKA robotic arm moving a payload through a maze](Images/maze_solving.gif)
 
 Project for the [path planning challenge](https://blog.udacity.com/2018/08/enter-the-kuka-robotics-challenge.html) in collaboration with KUKA and Udacity
 
